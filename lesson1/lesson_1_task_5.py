@@ -1,16 +1,15 @@
-def tt(let):
+def param_func(let):
     print(let, end='') #Параметризация функций
-tt(8)
-tt(8)
-tt(0)
-tt(0)
-tt(5)
-tt(5)
-tt(5)
-tt(3)
-tt(5)
-tt(3)
-tt(5)
 
 
-
+param_func(8)
+param_func(8)
+param_func(0)
+param_func(0)
+param_func(5)
+param_func(5)
+param_func(5)
+param_func(3)
+param_func(5)
+param_func(3)
+param_func(5)
