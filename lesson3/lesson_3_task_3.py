@@ -1,5 +1,5 @@
 from address import Address  # Импортируем класс Address
-from mailing import Mailing  # Импортируем класс Mailing
+from mailing_hw import Mailing  # Импортируем класс Mailing
 
 # Создаем экземпляры класса Address
 to_address = Address("123456", "Москва", "Тверская", "10", "5")
