@@ -50,4 +50,4 @@ def test_01_form(driver):
         field_color = field.value_of_css_property("background-color")
         assert field_color == alert_success_color, f"Expected {alert_success_color} for {field_name}, but got {field_color}"
 
-driver.quit()
+    driver.quit()
