@@ -18,36 +18,35 @@ def wait_for_element(driver, by, value):
 def test_01_form(driver):
     driver.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
 
-    # Заполнение формы с ожиданием
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='first-name']").send_keys("Иван")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='last-name']").send_keys("Петров")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='address']").send_keys("Ленина, 55-3")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='e-mail']").send_keys("test@skypro.com")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='phone']").send_keys("+7985899998787")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='zip-code']").send_keys("")  # Оставляем пустым
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='city']").send_keys("Москва")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='country']").send_keys("Россия")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='job-position']").send_keys("QA")
-    wait_for_element(driver, By.CSS_SELECTOR, "input[name='company']").send_keys("SkyPro")
+    # Заполнение формы
+    field_names = [
+        "first-name", "last-name", "address", "e-mail",
+        "phone", "zip-code", "city", "country",
+        "job-position", "company"
+    ]
+
+    values = [
+        "Иван", "Петров", "Ленина, 55-3", "test@skypro.com",
+        "+7985899998787", "", "Москва", "Россия",
+        "QA", "SkyPro"
+    ]
+
+    for name, value in zip(field_names, values):
+        wait_for_element(driver, By.NAME, name).send_keys(value)
 
     # Нажимаем кнопку "Submit"
     driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
 
-    # Проверка цвета поля "Zip code"
-    alert_danger_color = "rgba(248, 215, 218, 1)"  # Ожидаемый цвет для ошибки
-    color_zip = wait_for_element(driver, By.CSS_SELECTOR, "input[name='zip-code']").value_of_css_property("background-color")
-    assert color_zip == alert_danger_color, f"Expected {alert_danger_color}, but got {color_zip}"
+    # Проверка цвета поля "zip-code" для ошибки
+    zip_code = wait_for_element(driver, By.NAME, "zip-code")
+    alert_danger_color = 'rgba(248, 215, 218, 1)'  # Цвет фона для ошибки
+    zip_color = zip_code.value_of_css_property('background-color')
+    assert zip_color == alert_danger_color
 
-    # Проверка цвета остальных полей
-    alert_success_color = "rgba(209, 231, 221, 1)"  # Ожидаемый цвет для успешного заполнения
-    fields = [
-        "first-name", "last-name", "address", "e-mail", "phone",
-        "city", "country", "job-position", "company"
-    ]
+    # Проверка цвета остальных полей для успеха
+    alert_success_color = 'rgba(209, 231, 221, 1)'  # Цвет фона для успеха
+    buttons = [wait_for_element(driver, By.NAME, name) for name in field_names if name != "zip-code"]
 
-    for field_name in fields:
-        field = wait_for_element(driver, By.CSS_SELECTOR, f"input[name='{field_name}']")
-        field_color = field.value_of_css_property("background-color")
-        assert field_color == alert_success_color, f"Expected {alert_success_color} for {field_name}, but got {field_color}"
-
-    driver.quit()
+    for button in buttons:
+        button_color = button.value_of_css_property('background-color')
+        assert button_color == alert_success_color
