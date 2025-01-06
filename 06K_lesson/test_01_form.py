@@ -37,16 +37,29 @@ def test_01_form(driver):
     # Нажимаем кнопку "Submit"
     driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
 
-    # Проверка цвета поля "zip-code" для ошибки
-    zip_code = wait_for_element(driver, By.NAME, "zip-code")
-    alert_danger_color = 'rgba(248, 215, 218, 1)'  # Цвет фона для ошибки
-    zip_color = zip_code.value_of_css_property('background-color')
-    assert zip_color == alert_danger_color
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_all_elements_located((By.ID, "company"))
+    )
 
-    # Проверка цвета остальных полей для успеха
-    alert_success_color = 'rgba(209, 231, 221, 1)'  # Цвет фона для успеха
-    buttons = [wait_for_element(driver, By.NAME, name) for name in field_names if name != "zip-code"]
+    assert "danger" in driver.find_element(By.ID, "zip-code").get_attribute(
+        "class"), "Поле Zip code должно быть подсвечено красным"
 
-    for button in buttons:
-        button_color = button.value_of_css_property('background-color')
-        assert button_color == alert_success_color
+    fields = [
+        "first-name",
+        "last-name",
+        "address",
+        "e-mail",
+        "phone",
+        "city",
+        "country",
+        "job-position",
+        "company"
+    ]
+    for field_id in fields:
+        field = driver.find_element(By.ID, field_id)
+        assert "success" in driver.find_element(By.ID, field_id).get_attribute(
+            "class"), f"Поле {field_id} должно быть подсвечено зеленым"
+
+    print("Все проверки пройдены успешно!")
+
+    driver.quit()
