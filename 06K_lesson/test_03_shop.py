@@ -53,3 +53,5 @@ def test_purchase_total(driver):
     return total
 
     driver.quit()
+
+    #
