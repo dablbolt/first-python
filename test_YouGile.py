@@ -18,7 +18,7 @@ AUTH_DATA = {
 # Фикстура для получения ID проекта
 @pytest.fixture
 def project_id():
-    # Создаем проект для тестов
+    # Создаем проект 
     payload = {"title": "Новый проект для домашки24"}
     response = requests.post(f"{BASE_URL}/api-v2/projects", headers=HEADERS, json=payload)
     assert response.status_code == 201
